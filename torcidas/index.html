@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lula 13 — Torcidas V36.8</title>
+<title>Lula 13 — Clubes V36.2</title>
 <style>
 @import url('https://fonts.cdnfonts.com/css/lovelo');
 *{box-sizing:border-box}
@@ -44,12 +44,21 @@ canvas.dragging{cursor:grabbing}
   .camera{font-size:30px}
 }
 
-.resultDownloadImmediate{
-  display:block;width:100%;min-height:56px;margin:0 0 12px;
-  border:0;border-radius:12px;background:#111;color:#fff;
-  font-size:17px;font-weight:900;cursor:pointer;
-}
-#resultImg{cursor:pointer}
+.clubPicker{position:relative;margin-top:8px}
+.clubSearch{width:100%;height:50px;padding:0 52px 0 15px;border:2px solid #d7d7d7;border-radius:12px;background:#fff;font-size:16px;font-weight:700;color:#171717;outline:none}
+.clubSearch:focus{border-color:#168548;box-shadow:0 0 0 3px rgba(22,133,72,.12)}
+.clubPickerArrow{position:absolute;right:4px;top:4px;width:42px;height:42px;border:0;border-radius:9px;background:transparent;font-size:24px;cursor:pointer;color:#333}
+.clubOptions{display:none;position:absolute;z-index:50;left:0;right:0;top:56px;max-height:310px;overflow-y:auto;background:#fff;border:1px solid #d7d7d7;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.18);padding:6px}
+.clubOptions.open{display:block}
+.clubOption{display:block;width:100%;padding:12px 13px;border:0;border-radius:9px;background:#fff;text-align:left;font-size:15px;font-weight:700;color:#222;cursor:pointer}
+.clubOption:hover,.clubOption.active{background:#f0f7f3;color:#08783c}
+.clubNoResults{padding:14px;color:#666;font-size:14px;text-align:center}
+.clubSearchHint{margin:7px 2px 0;color:#666;font-size:12px;line-height:1.35}
+.supportCard.supportStrong{border:2px solid rgba(255,255,255,.38);box-shadow:0 10px 28px rgba(0,0,0,.16)}
+.supportCard.supportStrong h3{font-size:22px;margin-bottom:8px}
+.supportCard.supportStrong .supportPitch{font-size:16px;font-weight:800;line-height:1.45}
+.supportCard.supportStrong .copyPixBtn{min-height:52px;font-size:15px}
+
 </style>
 
 <style>
@@ -177,27 +186,6 @@ body{
   margin-top:14px;
 }
 </style>
-
-<style>
-/* V36.3 — resultado final totalmente estático */
-#resultBox.show #resultImg{
-  pointer-events:none !important;
-  touch-action:none !important;
-  user-select:none !important;
-  -webkit-user-select:none !important;
-  -webkit-user-drag:none !important;
-  cursor:default !important;
-}
-#resultBox.show canvas,
-#resultBox.show .resultCanvas{
-  pointer-events:none !important;
-  touch-action:none !important;
-  user-select:none !important;
-  -webkit-user-select:none !important;
-  cursor:default !important;
-}
-</style>
-
 </head>
 <body>
 <div class="wrap">
@@ -211,7 +199,15 @@ body{
     <section class="panel">
       <div id="editorControls" class="editorControls">
       <label for="club">1. ESCOLHA SEU TIME</label>
-      <select id="club" aria-label="Escolha seu time"></select>
+      <div class="clubPicker" id="clubPicker">
+  <input id="clubSearch" class="clubSearch" type="text" autocomplete="off"
+         placeholder="Digite ou escolha seu time" aria-label="Digite ou escolha seu time"
+         aria-expanded="false" aria-controls="clubOptions">
+  <button class="clubPickerArrow" id="clubPickerArrow" type="button" aria-label="Abrir lista de times">▾</button>
+  <div class="clubOptions" id="clubOptions" role="listbox"></div>
+</div>
+<select id="club" aria-label="Escolha seu time" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"></select>
+<p class="clubSearchHint">Toque para ver a lista completa ou comece a digitar o nome do clube.</p>
 
       <div class="clubInfo">
         <strong id="clubLabel">São Paulo</strong>
@@ -237,9 +233,9 @@ body{
 
       <button class="createBtn" id="createPhoto" type="button">✨ CRIAR FOTO</button>
 
-      <div class="supportCard">
-        <h3>Gostou da ferramenta? ❤️</h3>
-        <p>Ajude o projeto! Sua colaboração nos ajuda a manter esta ferramenta gratuita e melhorar o projeto.</p>
+      <div class="supportCard supportStrong">
+        <h3>❤️ AJUDE A MANTER O PROJETO NO AR</h3>
+        <p class="supportPitch">Se esta ferramenta foi útil para você, faça uma contribuição via Pix. Sua ajuda cobre os custos, mantém o projeto gratuito e permite que ele continue chegando a mais pessoas.</p>
         <div class="pixBox">
           <div class="pixLabel">Chave Pix (e-mail)</div>
           <div class="pixRow">
@@ -256,12 +252,13 @@ body{
 <section class="resultBox" id="resultBox">
   <h2 class="resultTitle">Sua foto ficou pronta! 🎉</h2>
   <p class="resultLead">Confira o resultado abaixo.</p>
-  <img id="resultImg" draggable="false" class="resultImg" alt="Seu avatar final">
-  <button class="resultDownload resultDownloadImmediate" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
+  <img id="resultImg" class="resultImg" alt="Seu avatar final">
 
-  <div class="supportCard resultSupport">
-    <h3>Gostou do resultado? ❤️</h3>
-    <p>Colabore conosco para manter esta ferramenta gratuita.</p>
+  <button class="resultDownload" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
+
+  <div class="supportCard resultSupport supportStrong">
+    <h3>❤️ SUA CONTRIBUIÇÃO FAZ DIFERENÇA</h3>
+    <p class="supportPitch">Gostou do resultado? Considere contribuir agora via Pix. É essa colaboração voluntária que ajuda a pagar os custos e manter a ferramenta gratuita e disponível.</p>
     <div class="pixBox">
       <div class="pixLabel">Chave Pix (e-mail)</div>
       <div class="pixRow">
@@ -273,7 +270,7 @@ body{
   </div>
 
   <div class="resultActions">
-
+    
 
     <div class="shareTitle">Compartilhar resultado</div>
     <div class="shareGrid resultShareGrid">
@@ -286,9 +283,9 @@ body{
     </div>
 
 
-    <div class="supportCard resultPixSecond">
-      <div class="supportTitle">Gostou do resultado? Colabore com o nosso projeto</div>
-      <p>Ajude a manter esta ferramenta gratuita e disponível para mais pessoas.</p>
+    <div class="supportCard resultPixSecond supportStrong">
+      <div class="supportTitle">❤️ AJUDE A MANTER ESTA FERRAMENTA GRATUITA</div>
+      <p class="supportPitch">Se puder, contribua via Pix. Cada colaboração ajuda a manter o projeto funcionando e disponível para mais pessoas.</p>
       <div class="pixKey">PIX: lula13foto@gmail.com</div>
       <button class="copyPixBtn" id="copyPixResultBottom" type="button">COPIAR CHAVE PIX</button>
     </div>
@@ -341,6 +338,79 @@ const canvas=document.getElementById('canvas');
 const ctx=canvas.getContext('2d');
 const clubSelect=document.getElementById('club');
 const dynamicText=document.getElementById('dynamicText');
+
+const clubSearch=document.getElementById('clubSearch');
+const clubOptions=document.getElementById('clubOptions');
+const clubPickerArrow=document.getElementById('clubPickerArrow');
+
+function normalizeClubSearch(value){
+  return (value || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+function currentClubLabel(){
+  const opt=clubSelect.options[clubSelect.selectedIndex];
+  return opt ? opt.textContent : '';
+}
+function renderClubOptions(filter=''){
+  const q=normalizeClubSearch(filter);
+  const options=[...clubSelect.options].filter(opt=>!q || normalizeClubSearch(opt.textContent).includes(q));
+  clubOptions.innerHTML='';
+  if(!options.length){
+    clubOptions.innerHTML='<div class="clubNoResults">Nenhum clube encontrado.</div>';
+    return;
+  }
+  options.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='clubOption'+(opt.value===clubSelect.value?' active':'');
+    btn.textContent=opt.textContent;
+    btn.dataset.value=opt.value;
+    btn.addEventListener('click',()=>{
+      clubSelect.value=opt.value;
+      clubSelect.dispatchEvent(new Event('change',{bubbles:true}));
+      clubSearch.value=opt.textContent;
+      clubOptions.classList.remove('open');
+      clubSearch.setAttribute('aria-expanded','false');
+    });
+    clubOptions.appendChild(btn);
+  });
+}
+function openClubOptions(){
+  renderClubOptions(clubSearch.value===currentClubLabel()?'':clubSearch.value);
+  clubOptions.classList.add('open');
+  clubSearch.setAttribute('aria-expanded','true');
+}
+function syncClubSearch(){
+  clubSearch.value=currentClubLabel();
+}
+clubSearch.addEventListener('focus',()=>{
+  if(clubSearch.value===currentClubLabel()) clubSearch.select();
+  openClubOptions();
+});
+clubSearch.addEventListener('click',openClubOptions);
+clubSearch.addEventListener('input',()=>{
+  renderClubOptions(clubSearch.value);
+  clubOptions.classList.add('open');
+  clubSearch.setAttribute('aria-expanded','true');
+});
+clubPickerArrow.addEventListener('click',()=>{
+  if(clubOptions.classList.contains('open')){
+    clubOptions.classList.remove('open');
+    clubSearch.setAttribute('aria-expanded','false');
+  }else{
+    clubSearch.focus();
+    openClubOptions();
+  }
+});
+document.addEventListener('click',(e)=>{
+  if(!document.getElementById('clubPicker').contains(e.target)){
+    clubOptions.classList.remove('open');
+    clubSearch.setAttribute('aria-expanded','false');
+    if(!normalizeClubSearch(clubSearch.value)) syncClubSearch();
+  }
+});
+clubSelect.addEventListener('change',syncClubSearch);
+setTimeout(syncClubSearch,0);
+
 const clubLabel=document.getElementById('clubLabel');
 const centerBgChip=document.getElementById('centerBgChip');
 const ringBar=document.getElementById('ringBar');
@@ -369,7 +439,7 @@ const clubs={
   sport:{label:'Sport Recife',text:'SOU SPORT',frame:'#111111',font:'#D71920',centerBg:'#C8102E'},
   bahia:{label:'Bahia',text:'SOU BAHIA',frame:'#1769AA',font:'#FFFFFF',centerBg:'#FFFFFF'},
   coritiba:{label:'Coritiba',text:'SOU CORITIBA',frame:'#08783E',font:'#FFFFFF',centerBg:'#FFFFFF'},
-  cap:{label:'Athletico Paranaense',text:'SOU ATHLETICO-PR',frame:'#D71920',font:'#111111',centerBg:'#D71920'},
+  cap:{label:'Athletico Paranaense',text:'SOU ATHLETICO-PR',frame:'#D71920',font:'#FFFFFF',centerBg:'#111111'},
   nautico:{label:'Náutico',text:'SOU NÁUTICO',frame:'#D71920',font:'#FFFFFF',centerBg:'#FFFFFF'},
   santacruz:{label:'Santa Cruz',text:'SOU SANTA CRUZ',frame:'#111111',font:'#FFFFFF',centerBg:'#FFFFFF'},
   ceara:{label:'Ceará',text:'SOU CEARÁ',frame:'#111111',font:'#FFFFFF',centerBg:'#FFFFFF'},
@@ -600,7 +670,7 @@ function drawBottomText(text,fontColor,specialSP=false){
     Calibração feita sobre a arte de referência 1200x1200:
     - centro do círculo: 600,600
     - centros das letras ficam aproximadamente a 500 px do centro
-    - arco de COM LULA 13 vai de ~156° até ~23°
+    - arco de E VOTO LULA 13 vai de ~156° até ~23°
     - abertura total aproximada: 2.33 rad
     - fonte: Lovelo, peso 900
   */
@@ -625,10 +695,10 @@ function drawBottomText(text,fontColor,specialSP=false){
   const advances = widths.map((w,i) => w + (i < chars.length-1 ? tracking : 0));
   const totalAdvance = advances.reduce((a,b) => a+b, 0);
 
-  // Para "COM LULA 13" usamos exatamente a abertura medida na arte.
+  // Para "E VOTO LULA 13" usamos exatamente a abertura medida na arte.
   // Para outros textos, preservamos a densidade tipográfica, com limite semelhante.
   let span;
-  if(text.trim().toUpperCase() === 'COM LULA 13'){
+  if(text.trim().toUpperCase() === 'E VOTO LULA 13'){
     span = referenceSpan;
   }else{
     const naturalSpan = totalAdvance / radius;
@@ -814,7 +884,7 @@ drawText(
     false
   );
   drawBottomText(
-    'COM LULA 13',
+    'E VOTO LULA 13',
     club.font,
     false
   );
@@ -916,7 +986,7 @@ base.onload=async()=>{
 };
 
 // ===== V32: recursos herdados do projeto principal =====
-const PROJECT_URL='https://lula13.online/torcidas';
+const PROJECT_URL='https://lula13.online/torcidas/';
 let generatedDataUrl='';
 
 const createPhotoBtn=document.getElementById('createPhoto');
@@ -995,7 +1065,7 @@ async function nativeShareToApp(appName){
       await navigator.share({
         files:[file],
         title:'Minha foto',
-        text:'Minha foto personalizada com as cores do meu clube.\n\nCrie a sua também:\n' + PROJECT_URL
+        text:'Minha foto personalizada com as cores do meu clube. Faça a sua também: ' + PROJECT_URL
       });
       return;
     }
@@ -1003,7 +1073,7 @@ async function nativeShareToApp(appName){
     if(navigator.share){
       await navigator.share({
         title:'Minha foto',
-        text:'Minha foto personalizada com as cores do meu clube.\n\nCrie a sua também:\n' + PROJECT_URL,
+        text:'Minha foto personalizada com as cores do meu clube. Faça a sua também: ' + PROJECT_URL,
         url:PROJECT_URL
       });
       return;
@@ -1072,22 +1142,6 @@ document.getElementById('toolShareX')?.addEventListener('click',()=>shareUrl('x'
 document.getElementById('toolShareThreads')?.addEventListener('click',()=>shareUrl('threads',true));
 
 })();
-
-document.getElementById('resultImg')?.addEventListener('click',()=>{
-  document.getElementById('resultDownload')?.click();
-});
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const finalImg=document.getElementById('resultImg');
-  if(finalImg){
-    finalImg.draggable=false;
-    finalImg.addEventListener('dragstart',e=>e.preventDefault());
-    finalImg.addEventListener('contextmenu',e=>e.preventDefault());
-  }
-});
-</script>
-
 </body>
 </html>
