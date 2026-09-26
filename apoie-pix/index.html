@@ -1,1 +1,74 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Militância Lula — Apoie via PIX</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#c81722;font-family:Arial,sans-serif;color:#171717}main{max-width:520px;margin:auto;min-height:100vh;background:#fff;padding:28px 20px 40px}
+.brand{text-align:center;color:#c81722;font-size:25px;font-weight:900;margin-bottom:22px}h1{font-size:30px;line-height:1.08;text-align:center;margin:0 0 12px}
+.lead{text-align:center;color:#555;line-height:1.5;margin:0 0 22px}.signature{display:inline-block;margin-top:5px;font-weight:800;color:#171717}.card{border:1px solid #e6e6e2;border-radius:22px;padding:22px 18px;box-shadow:0 8px 28px #00000010}
+.qr{display:block;width:min(310px,85vw);margin:18px auto 18px}.label{font-size:12px;font-weight:800;color:#777;text-transform:uppercase;letter-spacing:.7px;margin:15px 0 6px}
+.key{font-size:22px;font-weight:900;line-height:1.25;overflow-wrap:anywhere;text-align:center;margin:8px 0 4px}
+.beneficiary{margin-top:20px;padding:14px 12px;background:#f7f7f4;border:1px solid #e6e6e2;border-radius:13px;text-align:center}
+.beneficiary .label{margin:0 0 6px}
+.beneficiaryName{font-size:18px;font-weight:900}
+.qrIntro{text-align:center;font-size:13px;line-height:1.45;color:#666;margin:15px auto 0;max-width:360px}button{width:100%;border:0;border-radius:14px;padding:16px;margin-top:15px;background:#c81722;color:#fff;font-size:16px;font-weight:900;cursor:pointer}
+.green{background:#168347}.status{height:22px;margin-top:8px;color:#168347;font-weight:700;font-size:14px}.note{font-size:13px;color:#666;line-height:1.5;margin:15px 3px 0}
+footer{text-align:center;color:#777;font-size:12px;line-height:1.5;margin-top:22px}
 
+.shareSection{margin-top:20px;padding-top:18px;border-top:1px solid #ecece8;text-align:center}
+.shareSection h3{margin:0 0 7px;font-size:18px}
+.shareSection p{margin:0 0 12px;color:#666;font-size:14px;line-height:1.4}
+.shareButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shareButton{display:flex;align-items:center;justify-content:center;min-height:48px;border:0;border-radius:12px;color:#fff;font-weight:900;font-size:15px;text-decoration:none;cursor:pointer}
+.shareButton.whatsapp{background:#25D366}
+.shareButton.facebook{background:#1877F2}
+@media(max-width:480px){.shareButtons{grid-template-columns:1fr}}
+
+</style></head><body><main>
+<div class="brand">MILITÂNCIA LULA</div>
+<h1>Colabore com a Militância Lula</h1>
+<p class="lead">Sua contribuição voluntária ajuda a cobrir os custos das nossas ferramentas e ações digitais de apoio à reeleição do presidente Lula.<br><br><strong>Gratidão!</strong><br><span class="signature">João Guilherme — Militância Lula</span></p>
+<section class="card">
+<div class="label">Chave Pix</div><div class="key">lula13militancia@gmail.com</div>
+<button onclick="cp(KEY,'Chave Pix copiada!')">COPIAR CHAVE PIX</button>
+<div class="label">Pix Copia e Cola</div>
+<button class="green" onclick="cp(PIX,'Código Pix copiado!')">COPIAR CÓDIGO PIX</button>
+<div class="status" id="status"></div>
+<div class="beneficiary">
+  <div class="label">Beneficiário</div>
+  <div class="beneficiaryName">Pix em nome de João Guilherme da Militância Lula</div>
+</div>
+<div class="qrIntro">Escaneie o QR Code no aplicativo do seu banco ou use uma das opções de copiar acima.</div>
+<img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAISAQAAAACxRhsSAAAEuklEQVR4nO2dzY3jOBCFX60E9JHOwKFIGWxIjQlpM5BCcQADUEcDFGoPrCJpu3t6gFFzvcbjgbBF6QMFFIr1R0oUf9rWv/4YAZBBBhlkkEEGGWSQQUZliLURWE+7ANj9r4wANhuVGYDMm98/HzwPMsj4pKmqKiZVVY2DAhhUl5DygC4A8t+lDsRBm8eWZ3kXMl6fsZl2VNWUr8i8iWDKsgtgioDM/lzWtsfPgwwyfouxngB5j4NiPQ0KhKsA2wiZw1V0QSus3zkPMsho2nj3X6YIYJUh6ToDAgCC8HMEthPk8YGD5kEGGb9qLnZBAWyAAvuo698RgvBTMC2AAIMCUAhCLPcdOg8yyPhlyw6RtUGzQfpV5/fTjyKjDyPr06odNSvLbRcFrgKEhNrpek4w5XvsPMgg42uGzNuYOwC7ABhU5u1NsYrkcGp2sGZ/TuZ837HzIIOMT5qv+4PqEjQv6h4hTTkaZQN6o1kXDIyfktGLUeL8RSaB/KvaoqqabABBtekop2T0YbRpJ9Xkcf6QUNWriWNIwOS3eEc5JaMHw2UtWBYqS+IS1Fss637NTPkY9SkZnRi+7kc0yhI5YFrXeE/tu2kKqOYnKKdk9GDA1WYbIXUnyWWy+EzWxeJ0UU7J6MIo+tQUaC6LqhaoaVHV6vTfFU1RTsn4fobrU01NNKpxqxbPUdW4gClf2qdk9GMUf3/QbHxWxwnBDIJ8rfhb1emiPiWjE+Mxv+9+lBdLW2C18ahMnyb6UWT0YtzE+YtBWoXVtKiqp6Is2Mp1n4yejJt1H0BNQDVlUXlATZ/6fcybktGN0fhRTdCpJkqzdAYtqQB3obL1SjkloyPDdjttI4CQIHIqcf7NBuT9Mlp0H9sITBfbfvps70LG6zJM/kLK+6JtG9QmVn86xd1+redr+ZVuGUfMgwwyPmkf2adtDR/8b1nt7SLXfTK6M6zM1JNNP+TNfCZzpoZsAXhq3wZkPnoeZJDxYcv7TmRaErIZihBVJrW9KLqeFQD2EbnQPwAy/bML1lM8ch5kkPEbjLy9JKjqstWNJrtUP0p/nBNUL+U+mB37dO9Cxgsymji/pUfjbe10RCmaAjyXWouqaZ+S0YNR8va1u6vYL1tOUKW4JFQpp2R0YTRy2pRFAYCXmZbdJhGwXVHNAOWUjB6Mpk7aRK8U7dlouhHlYh9wvykZHRn38VM/QxJAk8tXbQtOy+JPOSWjE+Mxv+/7+Gy8FpyGW1XKOhQy+jGKnLZ2p8cAyjb9agsUYaW/T0ZHRhODuqnc8/NQrDAaTSrKRDSynp+MbozH81DcmfJj0NHm94uD5QOUUzJ6MJp1v1n8SwzgbiN0Y8cicN0nozOjfu8kl/TJyTrLm8IyqM216fKmMh88DzLI+KRVn6k1Pj38VHXnze4p6lMy/huGf+8kfyZK8qmnsAKVUtwn75d6Jqpbr0/3LmS8PqPG+UXO7lEtAIBNBOv5KhZd3fhdHjK6MR6+d4IwKCbdRwCD5u+dTItVoopdEwAh5oHneRcyXpfxYJ+Wk1H8dIl6RkpJlIJxfjL6Mj48D6WN/ce60aRsmA7aJP4pp2R8P0P063u+aOuzvAsZZJBBBhlkkEEGGf9/xr9F0zRhzpFErAAAAABJRU5ErkJggg==" alt="QR Code Pix">
+<div class="label">Chave Pix</div><div class="key">lula13militancia@gmail.com</div>
+<button onclick="cp(KEY,'Chave Pix copiada!')">COPIAR CHAVE PIX</button>
+<div class="label">Pix Copia e Cola</div>
+<button class="green" onclick="cp(PIX,'Código Pix copiado!')">COPIAR CÓDIGO PIX</button>
+<div class="status" id="status"></div>
+<p class="note"><b>Antes de confirmar:</b> confira no aplicativo do seu banco os dados do recebedor e o valor. A contribuição é voluntária e você escolhe quanto deseja enviar.</p>
+</section>
+
+<div class="shareSection">
+  <h3>Compartilhe esta página</h3>
+  <p>Ajude mais pessoas a conhecerem e apoiarem a iniciativa.</p>
+  <div class="shareButtons">
+    <a class="shareButton whatsapp" id="shareWhatsApp" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="shareButton facebook" id="shareFacebook" href="#" target="_blank" rel="noopener">Facebook</a>
+  </div>
+</div>
+
+<footer>Contribuição voluntária para apoiar os custos das ferramentas e ações digitais da Militância Lula. Nenhuma contribuição é obrigatória para utilizar a ferramenta.</footer>
+</main><script>
+const PIX='00020126330014br.gov.bcb.pix0111096267254865204000053039865802BR5923JOAO GUILHERME DA SILVA6009Sao Paulo62290525REC6AB71E03E70E93457347856304004C',KEY='lula13militancia@gmail.com';
+async function cp(v,m){try{await navigator.clipboard.writeText(v)}catch(e){let t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}let s=document.getElementById('status');s.textContent=m;setTimeout(()=>s.textContent='',2200)}
+</script>
+<script>
+(()=>{
+  const PAGE_URL='https://lula13.online/apoie-pix/';
+  const TEXT='Conheça e apoie a Militância Lula: ' + PAGE_URL;
+  const wa=document.getElementById('shareWhatsApp');
+  const fb=document.getElementById('shareFacebook');
+  if(wa) wa.href='https://wa.me/?text='+encodeURIComponent(TEXT);
+  if(fb) fb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(PAGE_URL);
+})();
+</script>
+
+</body></html>
