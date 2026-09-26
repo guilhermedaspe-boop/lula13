@@ -1,15 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T4ZKZ6LC80"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T4ZKZ6LC80');
-</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lula 13 — Crie sua foto de perfil apoiando Lula</title>
@@ -489,10 +480,17 @@ body{
   box-sizing:border-box!important;
 }
 
+
+.resultDownloadImmediate{
+  display:block;width:100%;min-height:56px;margin:0 0 12px;
+  border:0;border-radius:12px;background:#111;color:#fff;
+  font-size:17px;font-weight:900;cursor:pointer;
+}
+#resultImg{cursor:pointer}
 </style>
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="CRIE A SUA FOTO PARA AJUDAR O PRESIDENTE LULA">
+<meta property="og:title" content="Lula 13">
 <meta property="og:description" content="Crie sua foto de perfil apoiando a reeleição do Presidente Lula. Personalize e compartilhe nas suas redes.">
 <meta property="og:image" content="https://lula13.online/preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -783,6 +781,7 @@ body{
   <h2 class="resultTitle">Sua foto ficou pronta! 🎉</h2>
   <p class="resultLead">Confira o resultado abaixo.</p>
   <img id="resultImg" class="resultImg" alt="Seu avatar final">
+  <button class="resultDownload resultDownloadImmediate" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
 
   <div class="supportCard">
     <h3>Gostou do resultado? ❤️</h3>
@@ -800,7 +799,6 @@ body{
   </div>
 
   <div class="resultActions">
-    <button class="resultDownload" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
     <button class="resultShare" id="resultShare" type="button">📤 COMPARTILHAR RESULTADO</button>
   </div>
 
@@ -861,6 +859,7 @@ body{
 </footer>
 
 <script>
+/* V9.20: fundo externo acompanha a cor/degradê escolhido + borda externa reforçada */
 (()=>{
 const PROJECT_URL='https://lula13.online';
 let selectedGradient=null;
@@ -1012,8 +1011,8 @@ function drawBrazilRing(){
 }
 
 function drawBrazilOuterRing(){
- const radius=596;
- const lineWidth=7;
+ const radius=592;
+ const lineWidth=16;
  const segments=180;
  const green={r:0,g:137,b:62};
  const yellow={r:255,g:223,b:0};
@@ -1301,7 +1300,15 @@ function makeExportCanvas(){
   exportCanvas.height=1200;
   const exportCtx=exportCanvas.getContext('2d');
 
-  exportCtx.fillStyle='#f5f5f5';
+  // Fundo quadrado do arquivo final acompanha a cor escolhida.
+  if(selectedGradient && selectedGradient.length>1){
+    const bgGradient=exportCtx.createLinearGradient(0,0,exportCanvas.width,0);
+    const last=selectedGradient.length-1;
+    selectedGradient.forEach((c,i)=>bgGradient.addColorStop(i/last,c));
+    exportCtx.fillStyle=bgGradient;
+  }else{
+    exportCtx.fillStyle=color.value;
+  }
   exportCtx.fillRect(0,0,exportCanvas.width,exportCanvas.height);
   exportCtx.drawImage(canvas,0,0);
 
@@ -1564,5 +1571,9 @@ resultPixHelp?.addEventListener('click',async()=>{
 });
 
 })();
+
+document.getElementById('resultImg')?.addEventListener('click',()=>{
+  document.getElementById('resultDownload')?.click();
+});
 </script>
 </body></html>
