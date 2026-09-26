@@ -59,6 +59,66 @@ canvas.dragging{cursor:grabbing}
 .supportCard.supportStrong .supportPitch{font-size:16px;font-weight:800;line-height:1.45}
 .supportCard.supportStrong .copyPixBtn{min-height:52px;font-size:15px}
 
+
+/* Correção: botão BAIXAR FOTO do resultado */
+#downloadBtn{
+  display:block !important;
+  width:100% !important;
+  max-width:520px !important;
+  margin:14px auto 18px !important;
+  padding:15px 18px !important;
+  border:0 !important;
+  border-radius:12px !important;
+  background:#111 !important;
+  color:#fff !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:18px !important;
+  font-weight:800 !important;
+  line-height:1.2 !important;
+  text-align:center !important;
+  text-decoration:none !important;
+  cursor:pointer !important;
+  box-sizing:border-box !important;
+}
+#downloadBtn:hover{opacity:.9}
+@media(max-width:640px){
+  #downloadBtn{
+    max-width:none !important;
+    font-size:17px !important;
+    padding:15px 14px !important;
+  }
+}
+
+
+/* Correção definitiva do botão real BAIXAR FOTO */
+#resultDownload.resultDownload{
+  display:block !important;
+  width:100% !important;
+  max-width:520px !important;
+  margin:14px auto 18px !important;
+  padding:16px 20px !important;
+  min-height:54px !important;
+  border:0 !important;
+  border-radius:12px !important;
+  background:#111 !important;
+  color:#fff !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:18px !important;
+  font-weight:800 !important;
+  line-height:1.2 !important;
+  text-align:center !important;
+  cursor:pointer !important;
+  box-sizing:border-box !important;
+}
+#resultDownload.resultDownload:hover{opacity:.9}
+@media(max-width:640px){
+  #resultDownload.resultDownload{
+    max-width:none !important;
+    font-size:17px !important;
+    padding:16px 14px !important;
+  }
+}
+
 </style>
 
 <style>
@@ -674,16 +734,16 @@ function drawBottomText(text,fontColor,specialSP=false){
     - abertura total aproximada: 2.33 rad
     - fonte: Lovelo, peso 900
   */
-  const radius = 500;
+  const radius = 520;
   const referenceSpan = 2.33;
   const centerAngle = Math.PI / 2;
-  let fs = 160;
+  let fs = 172;
 
   // Redução apenas quando o usuário escrever algo maior que a frase de referência.
-  if(chars.length > 11) fs = 154;
-  if(chars.length > 14) fs = 140;
-  if(chars.length > 18) fs = 124;
-  if(chars.length > 22) fs = 110;
+  if(chars.length > 11) fs = 166;
+  if(chars.length > 14) fs = 150;
+  if(chars.length > 18) fs = 134;
+  if(chars.length > 22) fs = 118;
 
   ctx.font = `900 ${fs}px 'Lovelo','Lovelo Black',sans-serif`;
 
