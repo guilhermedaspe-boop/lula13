@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T4ZKZ6LC80"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T4ZKZ6LC80');
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lula 13 — Crie sua foto de perfil apoiando Lula</title>
@@ -826,7 +836,7 @@ canvas.defaultPhotoLocked{
 }
 
 
-/* V9.57 — atalho para o editor de foto de futebol no rodapé */
+/* V9.62 — atalho para o editor de foto de futebol no rodapé */
 .footerFootballLink{
   display:block;
   width:100%;
@@ -843,6 +853,126 @@ canvas.defaultPhotoLocked{
   box-sizing:border-box;
 }
 .footerFootballLink:hover{background:#0f7336}
+
+
+/* V9.62 — página de RESULTADO com a mesma ordem visual de Torcidas.
+   Não altera o editor/página de criação. */
+.resultBox.show .resultActionsTorcidas{
+  display:block !important;
+  margin:14px 0 0 !important;
+}
+.resultBox.show .resultActionsTorcidas .resultAgain{
+  display:block !important;
+  width:100% !important;
+  min-height:58px !important;
+  padding:14px 18px !important;
+  border:1px solid #c9c9c9 !important;
+  border-radius:12px !important;
+  background:#fff !important;
+  color:#171717 !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+}
+.resultBox.show .resultShareBox{
+  margin-top:18px !important;
+  padding-top:0 !important;
+  border-top:0 !important;
+}
+.resultBox.show .resultShareBox .shareTitle{
+  font-size:20px !important;
+  line-height:1.2 !important;
+  font-weight:900 !important;
+  text-align:center !important;
+  margin-bottom:14px !important;
+}
+.resultBox.show .resultShareBox .sharePreview{
+  font-size:16px !important;
+  line-height:1.45 !important;
+  text-align:center !important;
+}
+.resultBox.show .resultShareBox .shareNote{
+  font-size:14px !important;
+  line-height:1.45 !important;
+  text-align:center !important;
+  color:#666 !important;
+}
+.resultBox.show .resultBottomActions{
+  display:block !important;
+  margin-top:18px !important;
+}
+.resultBox.show .resultBottomActions .resultPixHelp{
+  width:100% !important;
+  min-height:58px !important;
+  border-radius:12px !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+}
+@media(max-width:760px){
+  .resultBox.show{
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+  .resultBox.show .resultTitle{
+    font-size:25px !important;
+    line-height:1.12 !important;
+  }
+  .resultBox.show .resultLead{
+    font-size:17px !important;
+  }
+  .resultBox.show .resultImg{
+    width:100% !important;
+    max-width:none !important;
+    border-radius:18px !important;
+  }
+  .resultBox.show .resultDownloadImmediate{
+    width:100% !important;
+    min-height:58px !important;
+    font-size:18px !important;
+    border-radius:12px !important;
+  }
+  .resultBox.show .supportCard{
+    width:100% !important;
+    margin:0 auto 14px !important;
+    border-radius:14px !important;
+  }
+}
+
+
+/* V9.62 — ajustes somente no resultado */
+.resultBox.show .resultWhatsAppImmediate{
+ display:block!important;width:100%!important;max-width:none!important;
+ min-height:58px!important;margin:0 auto 18px!important;padding:14px 18px!important;
+ border:0!important;border-radius:12px!important;background:#25D366!important;
+ color:#fff!important;font-size:18px!important;font-weight:900!important;cursor:pointer!important;
+}
+.resultBox.show .resultWhatsAppImmediate:hover{filter:brightness(.96)}
+
+
+/* V9.62 — botão CRIAR OUTRA FOTO roxo */
+.resultBox.show .resultAgain{
+  background:#7c3aed !important;
+  color:#fff !important;
+  border-color:#7c3aed !important;
+}
+.resultBox.show .resultAgain:hover{
+  background:#6d28d9 !important;
+  border-color:#6d28d9 !important;
+}
+
+
+/* V9.62 — CRIAR OUTRA FOTO roxo fixo */
+#resultBox .resultAgain,
+#resultBox .resultAgain:link,
+#resultBox .resultAgain:visited,
+#resultBox .resultAgain:hover,
+#resultBox .resultAgain:focus,
+#resultBox .resultAgain:active{
+  background:#7c3aed !important;
+  background-color:#7c3aed !important;
+  color:#ffffff !important;
+  border-color:#7c3aed !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
 
 </style>
 
@@ -1130,6 +1260,7 @@ canvas.defaultPhotoLocked{
   <p class="resultLead">Confira o resultado abaixo.</p>
   <img id="resultImg" class="resultImg" alt="Seu avatar final">
   <button class="resultDownload resultDownloadImmediate" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
+  <button class="shareBtn resultWhatsAppImmediate" id="shareWhatsApp" type="button">COMPARTILHAR NO WHATSAPP</button>
 
   <div class="supportCard">
     <h3>PRECISO DA SUA AJUDA</h3>
@@ -1146,15 +1277,14 @@ canvas.defaultPhotoLocked{
     <p class="supportFine">Contribuição voluntária destinada à manutenção do projeto. Não é uma doação eleitoral.</p>
   </div>
 
-  <div class="resultActions">
-    <button class="resultShare" id="resultShare" type="button">📤 COMPARTILHAR RESULTADO</button>
+  <div class="resultActions resultActionsTorcidas">
+    <button class="resultAgain" id="resultAgain" type="button">↻ CRIAR OUTRA FOTO</button>
   </div>
 
   <div class="shareBox resultShareBox" id="shareBox" style="display:none">
   <div class="shareTitle">Compartilhar resultado nas redes sociais</div>
   <p class="sharePreview"><strong>Mensagem:</strong> Olha como ficou minha foto em apoio ao Presidente Lula! ❤️ Faça o seu também: <span id="shareProjectUrl">https://lula13.online</span></p>
   <div class="shareGrid">
-    <button class="shareBtn" id="shareWhatsApp" type="button">WhatsApp</button>
     <button class="shareBtn" id="shareFacebook" type="button">Facebook</button>
     <button class="shareBtn" id="shareX" type="button">X / Twitter</button>
     <button class="shareBtn" id="shareThreads" type="button">Threads</button>
@@ -1164,7 +1294,6 @@ canvas.defaultPhotoLocked{
 
   <div class="resultBottomActions">
     <button class="resultPixHelp" id="resultPixHelp" type="button">❤️ AJUDAR O PROJETO — COPIAR CHAVE PIX</button>
-    <button class="resultAgain" id="resultAgain" type="button">↻ CRIAR OUTRA FOTO</button>
   </div>
 </div>
 </section>
@@ -1336,7 +1465,7 @@ function draw(){
  if(userImg){
    ctx.save();ctx.beginPath();ctx.arc(C.x,C.y,C.r,0,Math.PI*2);ctx.clip();
    const cover=Math.max(C.r*2/userImg.width,C.r*2/userImg.height),s=cover*Number(zoom.value),w=userImg.width*s,h=userImg.height*s;
-   if(usingDefaultPhoto && !exportFullOpacity) ctx.globalAlpha=0.58;
+   if(usingDefaultPhoto && !exportFullOpacity) ctx.globalAlpha = isExporting ? 1 : 0.58;
    ctx.drawImage(userImg,C.x-w/2+offX,C.y-h/2+offY,w,h);
    ctx.globalAlpha=1;
    ctx.restore();
@@ -1716,10 +1845,14 @@ document.getElementById('centerPhoto').addEventListener('click',()=>{
   if(usingDefaultPhoto) return;
   offX=0; offY=0; zoom.value=1; draw();
 });
+let isExporting=false;
+
 function makeExportCanvas(){
   const previousExportFullOpacity=exportFullOpacity;
   exportFullOpacity=true;
+  isExporting=true;
   draw();
+  isExporting=false;
 
   const exportCanvas=document.createElement('canvas');
   exportCanvas.width=1200;
@@ -1788,6 +1921,7 @@ document.getElementById('download').onclick=()=>{
   const resultImg=document.getElementById('resultImg');
   const shareBox=document.getElementById('shareBox');
   resultImg.src=makeExportCanvas().toDataURL('image/png');
+  overlay.style.display='none';
   document.getElementById('editorControls').classList.add('isHidden');
   resultBox.classList.add('show');
   shareBox.style.display='block';
@@ -1796,11 +1930,7 @@ document.getElementById('download').onclick=()=>{
 
 document.getElementById('resultDownload').onclick=downloadAvatar;
 
-document.getElementById('resultShare').onclick=async()=>{
-  const text='Olha como ficou minha foto em apoio ao Presidente Lula! ❤️ Faça o seu também: '+PROJECT_URL;
-  if(await nativeShare(text)) return;
-  document.getElementById('shareBox').scrollIntoView({behavior:'smooth',block:'start'});
-};
+
 
 document.getElementById('resultAgain').onclick=()=>{
   photo.value='';
