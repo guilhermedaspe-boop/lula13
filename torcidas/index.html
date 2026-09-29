@@ -1,9 +1,19 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T4ZKZ6LC80"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T4ZKZ6LC80');
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lula 13 — Clubes V37.7</title>
+<title>Lula 13 — Clubes V37.9</title>
 <style>
 @import url('https://fonts.cdnfonts.com/css/lovelo');
 *{box-sizing:border-box}
@@ -377,6 +387,55 @@ canvas{touch-action:pan-y!important}
 }
 .footerProfessionLink:hover{background:#0f7336}
 </style>
+
+<style>
+/* V37.9 — últimas melhorias da página de resultado do projeto principal */
+#resultBox .resultWhatsAppImmediate{
+  display:block!important;
+  width:100%!important;
+  max-width:720px!important;
+  min-height:58px!important;
+  margin:0 auto 18px!important;
+  padding:15px 18px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:#25D366!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:18px!important;
+  font-weight:900!important;
+  line-height:1.2!important;
+  text-align:center!important;
+  cursor:pointer!important;
+}
+#resultBox .resultWhatsAppImmediate:hover,
+#resultBox .resultWhatsAppImmediate:focus,
+#resultBox .resultWhatsAppImmediate:active{
+  background:#20bd5a!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+#resultBox .resultAgain,
+#resultBox .resultAgain:link,
+#resultBox .resultAgain:visited,
+#resultBox .resultAgain:hover,
+#resultBox .resultAgain:focus,
+#resultBox .resultAgain:active{
+  background:#7c3aed!important;
+  background-color:#7c3aed!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  border-color:#7c3aed!important;
+}
+@media(max-width:760px){
+  #resultBox .resultWhatsAppImmediate{
+    max-width:none!important;
+    width:100%!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -445,6 +504,7 @@ canvas{touch-action:pan-y!important}
   <p class="resultLead">Confira o resultado abaixo.</p>
   <img id="resultImg" class="resultImg" alt="Seu avatar final">
   <button class="resultDownload resultDownloadImmediate" id="resultDownload" type="button">⬇ BAIXAR FOTO</button>
+  <button class="shareBtn whatsapp resultWhatsAppImmediate" id="resultWhatsAppImmediate" type="button">COMPARTILHAR NO WHATSAPP</button>
 
   <div class="supportCard">
     <h3>PRECISO DA SUA AJUDA</h3>
@@ -467,7 +527,7 @@ canvas{touch-action:pan-y!important}
     <div class="shareTitle">Compartilhar resultado nas redes sociais</div>
     <p class="sharePreview"><strong>Mensagem:</strong> Olha como ficou minha foto com as cores do meu clube! ⚽ Faça a sua também: <span id="shareProjectUrl">https://lula13.online/torcidas/</span></p>
     <div class="shareGrid">
-      <button class="shareBtn whatsapp" id="shareWhatsApp" type="button">WhatsApp</button>
+      <button class="shareBtn whatsapp" id="shareWhatsApp" type="button" style="display:none">WhatsApp</button>
       <button class="shareBtn facebook" id="shareFacebook" type="button">Facebook</button>
       <button class="shareBtn x" id="shareX" type="button">X / Twitter</button>
       <button class="shareBtn threads" id="shareThreads" type="button">Threads</button>
@@ -954,7 +1014,7 @@ function drawPhoto(){
   const club=clubs[clubSelect.value];
   // V37.5: somente a área da foto fica menor que o círculo interno do frame.
   // Isso cria o mesmo respiro visual do projeto principal sem reduzir o design.
-  const photoR=C.r-16;
+  const photoR=C.r;
 
   ctx.save();
   ctx.beginPath();
@@ -1375,5 +1435,16 @@ document.getElementById('toolShareThreads')?.addEventListener('click',()=>shareU
 
 })();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const immediate=document.getElementById('resultWhatsAppImmediate');
+  const existing=document.getElementById('shareWhatsApp');
+  if(immediate && existing){
+    immediate.addEventListener('click',function(){ existing.click(); });
+  }
+});
+</script>
+
 </body>
 </html>
