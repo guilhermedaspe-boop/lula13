@@ -1639,8 +1639,8 @@ canvas.defaultPhotoLocked{
 <div class="resultBox" id="resultBox">
   <img id="resultImg" class="resultImg" alt="Seu avatar final">
   <div class="supportCard">
-    <h3>PRECISO DA SUA AJUDA</h3>
-    <p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13foto@gmail.com</strong></p>
+    <h3>GOSTOU? EU PRECISO DA SUA AJUDA</h3>
+    <p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13foto@gmail.com</strong></p>
 
     <div class="pixBox">
       <div class="pixLabel">Chave Pix (e-mail)</div>
@@ -3087,7 +3087,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const resultTitle=result && result.querySelector('.resultTitle');
   if(result && resultTitle && !document.getElementById('v989ResultDonation')){
     const cta=document.createElement('div'); cta.id='v989ResultDonation'; cta.className='supportCard';
-    cta.innerHTML='<h3>PRECISO DA SUA AJUDA</h3><p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13foto@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
+    cta.innerHTML='<h3>GOSTOU? EU PRECISO DA SUA AJUDA</h3><p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13foto@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
     resultTitle.insertAdjacentElement('beforebegin', cta);
   }
   document.addEventListener('click',function(ev){
@@ -3266,8 +3266,8 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
   // Match the result's top CTA copy with the other maintenance CTAs.
   const resultCta=document.getElementById('v989ResultDonation');
   if(resultCta){
-    const h=resultCta.querySelector('h3'); if(h)h.textContent='PRECISO DA SUA AJUDA';
-    const p=resultCta.querySelector('p'); if(p)p.textContent='Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção.';
+    const h=resultCta.querySelector('h3'); if(h)h.textContent='GOSTOU? EU PRECISO DA SUA AJUDA';
+    const p=resultCta.querySelector('p'); if(p)p.textContent='Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção.';
   }
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix,{once:true});else fix();
@@ -3437,6 +3437,37 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrangeDonationCtas, {once:true});
   else arrangeDonationCtas();
+})();
+</script>
+
+
+
+<!-- Ajuste solicitado: no resultado, o botão CRIAR OUTRA FOTO fica logo abaixo do bloco de ajuda. -->
+<script id="v9-104-result-order-help-before-again">
+(function(){
+  function arrangeResultOrder(){
+    var result = document.getElementById('resultBox');
+    if (!result) return;
+    var help = result.querySelector(':scope > .supportCard');
+    var whatsapp = document.getElementById('shareWhatsApp');
+    var againWrap = result.querySelector(':scope > .resultActionsTorcidas');
+    if (help && whatsapp && whatsapp.parentElement === result && whatsapp.nextElementSibling !== help) {
+      whatsapp.insertAdjacentElement('afterend', help);
+    }
+    if (help && againWrap && help.nextElementSibling !== againWrap) {
+      help.insertAdjacentElement('afterend', againWrap);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', arrangeResultOrder, {once:true});
+  } else {
+    arrangeResultOrder();
+  }
+  document.addEventListener('click', function(event){
+    if (event.target && (event.target.id === 'download' || event.target.closest('#download'))) {
+      setTimeout(arrangeResultOrder, 0);
+    }
+  });
 })();
 </script>
 
