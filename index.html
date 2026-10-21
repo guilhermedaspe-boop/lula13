@@ -3523,4 +3523,73 @@ function copyPixFallback(text, button){
   }
 }
 </script>
+<style id="donationPopupStyles">
+#donationPopup{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.88);box-sizing:border-box;font-family:Arial,sans-serif}
+#donationPopup.open{display:flex}
+#donationPopup .dp-card{position:relative;width:min(100%,440px);box-sizing:border-box;background:#050505;color:#fff;border:1px solid #3b3b3b;border-radius:18px;padding:32px 22px 22px;text-align:center;box-shadow:0 18px 70px #000}
+#donationPopup .dp-close{position:absolute;right:10px;top:7px;border:0;background:transparent;color:#fff;font-size:32px;line-height:1;padding:5px 10px;cursor:pointer}
+#donationPopup h2{font-size:clamp(25px,6vw,32px);line-height:1.15;margin:8px 20px 14px;color:#fff}
+#donationPopup p{font-size:18px;line-height:1.45;margin:0 0 20px;color:#fff}
+#donationPopup .dp-pix{padding:13px 10px;margin:0 0 12px;border:1px solid #555;border-radius:10px;color:#fff;font-weight:700;overflow-wrap:anywhere;font-size:17px}
+#donationPopup .dp-copy{display:block;width:100%;border:1px solid #fff;border-radius:10px;background:#fff;color:#111;font-weight:800;font-size:15px;padding:15px 12px;cursor:pointer;margin-bottom:18px}
+#donationPopup .dp-view{display:block;width:100%;border:0;border-radius:12px;background:#19b957;color:#fff;font-weight:900;font-size:21px;padding:19px 12px;cursor:pointer;box-shadow:0 4px 0 #087b35}
+#donationPopup .dp-view:hover{background:#12a84c}
+</style>
+<div id="donationPopup" role="dialog" aria-modal="true" aria-labelledby="donationPopupTitle">
+ <div class="dp-card">
+  <button class="dp-close" id="donationPopupClose" type="button" aria-label="Fechar e ver minha foto">×</button>
+  <h2 id="donationPopupTitle">Gostou da Ferramenta?</h2>
+  <p>Precisamos da sua ajuda para continuar no ar.</p>
+  <div class="dp-pix" id="donationPopupPix">lula13online@gmail.com</div>
+  <button class="dp-copy" id="donationPopupCopy" type="button">COPIAR CHAVE PIX PARA AJUDAR</button>
+  <button class="dp-view" id="donationPopupView" type="button">VER MINHA FOTO →</button>
+ </div>
+</div>
+<script id="donationPopupBehavior">
+(function(){
+ const popup=document.getElementById('donationPopup');
+ const create=document.getElementById('download');
+ const result=document.getElementById('resultBox');
+ const img=document.getElementById('resultImg');
+ const share=document.getElementById('shareBox');
+ let pending=false;
+ function revealResult(){
+  if(!pending)return; pending=false; popup.classList.remove('open');
+  if(result)result.classList.add('show');
+  if(share)share.style.display='block';
+  document.body.classList.add('showing-result');
+  setTimeout(()=>{if(img)img.scrollIntoView({behavior:'auto',block:'start'});},80);
+ }
+ function startCreate(event){
+  if(!create||!result||!img||!popup)return;
+  // Intercept the real desktop/mobile create button, run its existing photo-generation
+  // handler, then show the donation popup before revealing the finished result.
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  try {
+   if(typeof create.onclick==='function') create.onclick.call(create);
+   else if(typeof draw==='function'&&typeof makeExportCanvas==='function'){
+    draw(); img.src=makeExportCanvas().toDataURL('image/png');
+    if(typeof overlay!=='undefined'&&overlay)overlay.style.display='none';
+    const controls=document.getElementById('editorControls');if(controls)controls.classList.add('isHidden');
+    const previewColumn=document.getElementById('previewColumn');if(previewColumn){const stage=previewColumn.querySelector('.stage');if(stage)stage.style.display='none';}
+   }
+  } catch(err) { console.error('Falha ao preparar foto antes do pop-up:',err); }
+  result.classList.remove('show');
+  if(share)share.style.display='none';
+  pending=true;
+  popup.classList.add('open');
+ }
+ if(create)create.addEventListener('click',startCreate,true);
+ document.getElementById('donationPopupClose').addEventListener('click',revealResult);
+ document.getElementById('donationPopupView').addEventListener('click',revealResult);
+ document.getElementById('donationPopupCopy').addEventListener('click',async function(){
+  const btn=this, key='lula13online@gmail.com';
+  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(key);btn.textContent='✓ CHAVE PIX COPIADA';return;}}catch(e){}
+  const area=document.createElement('textarea');area.value=key;area.readOnly=true;area.style.position='fixed';area.style.opacity='0';area.style.left='0';area.style.top='0';document.body.appendChild(area);area.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}area.remove();btn.textContent=ok?'✓ CHAVE PIX COPIADA':'Chave Pix: '+key;
+ });
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&popup.classList.contains('open'))revealResult()});
+})();
+</script>
+
 </body></html>
