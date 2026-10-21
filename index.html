@@ -1257,7 +1257,7 @@ canvas.defaultPhotoLocked{
   <div id="donationCtaSlot">
 <div class="supportCard supportCardTop">
     <h3>PRECISO DA SUA AJUDA</h3>
-    <p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13foto@gmail.com</strong></p>
+    <p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13online@gmail.com</strong></p>
 
     <div class="pixBox">
       <div class="pixLabel">Chave Pix (e-mail)</div>
@@ -2979,14 +2979,36 @@ resultPixHelp?.addEventListener('click',async()=>{
 const copyPixFooter=document.getElementById('copyPixFooter');
 if(copyPixFooter){
   copyPixFooter.addEventListener('click',async()=>{
-    const key=document.getElementById('pixKeyFooter').textContent.trim();
+    const key=(document.getElementById('pixKeyFooter')?.textContent || 'lula13online@gmail.com').trim();
+    let copied=false;
     try{
-      await navigator.clipboard.writeText(key);
+      if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+        await navigator.clipboard.writeText(key);
+        copied=true;
+      }
+    }catch(e){}
+    if(!copied){
+      const area=document.createElement('textarea');
+      area.value=key;
+      area.setAttribute('readonly','');
+      area.style.position='fixed';
+      area.style.opacity='0';
+      area.style.pointerEvents='none';
+      area.style.left='0';
+      area.style.top='0';
+      document.body.appendChild(area);
+      area.focus(); area.select();
+      try{copied=document.execCommand('copy');}catch(e){}
+      area.remove();
+    }
+    if(copied){
       const old=copyPixFooter.textContent;
       copyPixFooter.textContent='✓ CHAVE PIX COPIADA';
-      setTimeout(()=>copyPixFooter.textContent=old,1800);
-    }catch(e){
-      window.prompt('Copie a chave Pix:',key);
+      copyPixFooter.classList.add('copied');
+      setTimeout(()=>{copyPixFooter.textContent=old;copyPixFooter.classList.remove('copied');},1800);
+    }else{
+      copyPixFooter.textContent='Selecione a chave Pix exibida';
+      setTimeout(()=>copyPixFooter.textContent='📋 COPIAR CHAVE PIX',2500);
     }
   });
 }
@@ -3093,8 +3115,8 @@ document.addEventListener('DOMContentLoaded', function(){
   document.addEventListener('click',function(ev){
     const btn=ev.target.closest('[data-copy-pix]'); if(!btn) return;
     const key='lula13online@gmail.com';
-    if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(key).then(()=>{btn.textContent='✓ CHAVE PIX COPIADA';}).catch(()=>{window.prompt('Copie a chave Pix:',key);});}
-    else window.prompt('Copie a chave Pix:',key);
+    if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(key).then(()=>{btn.textContent='✓ CHAVE PIX COPIADA';}).catch(()=>{copyPixFallback(key,btn);});}
+    else copyPixFallback(key,btn);
   });
 });
 </script>
@@ -3471,4 +3493,34 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
 })();
 </script>
 
+
+<script>
+/* Fallback de cópia sem prompt/janela modal. */
+function copyPixFallback(text, button){
+  let copied = false;
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', '');
+  area.style.position = 'fixed';
+  area.style.opacity = '0';
+  area.style.pointerEvents = 'none';
+  area.style.left = '0';
+  area.style.top = '0';
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+  try { copied = document.execCommand('copy'); } catch (e) {}
+  area.remove();
+  if (button) {
+    if (copied) {
+      const old = button.textContent;
+      button.textContent = '✓ CHAVE PIX COPIADA';
+      button.classList.add('copied');
+      window.setTimeout(() => { button.textContent = old; button.classList.remove('copied'); }, 2200);
+    } else {
+      button.textContent = 'Selecione a chave Pix exibida';
+    }
+  }
+}
+</script>
 </body></html>
