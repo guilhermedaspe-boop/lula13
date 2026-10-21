@@ -1262,7 +1262,7 @@ canvas.defaultPhotoLocked{
     <div class="pixBox">
       <div class="pixLabel">Chave Pix (e-mail)</div>
       <div class="pixRow">
-        <div class="pixKey" id="pixKeyTop">lula13foto@gmail.com</div>
+        <div class="pixKey" id="pixKeyTop">lula13online@gmail.com</div>
         <button class="copyPixBtn supportBtn" id="copyPixTop" type="button">📋 COPIAR CHAVE PIX</button>
       </div>
     </div>
@@ -1640,12 +1640,12 @@ canvas.defaultPhotoLocked{
   <img id="resultImg" class="resultImg" alt="Seu avatar final">
   <div class="supportCard">
     <h3>GOSTOU? EU PRECISO DA SUA AJUDA</h3>
-    <p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13foto@gmail.com</strong></p>
+    <p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13online@gmail.com</strong></p>
 
     <div class="pixBox">
       <div class="pixLabel">Chave Pix (e-mail)</div>
       <div class="pixRow">
-        <div class="pixKey" id="pixKey">lula13foto@gmail.com</div>
+        <div class="pixKey" id="pixKey">lula13online@gmail.com</div>
         <button class="copyPixBtn supportBtn" id="copyPix" type="button">📋 COPIAR CHAVE PIX</button>
       </div>
     </div>
@@ -1714,11 +1714,11 @@ canvas.defaultPhotoLocked{
 
 <div class="supportCard footerSupportCard">
   <h3>PRECISO DA SUA AJUDA</h3>
-  <p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13foto@gmail.com</strong></p>
+  <p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção. <strong>Chave Pix: lula13online@gmail.com</strong></p>
   <div class="pixBox">
     <div class="pixLabel">Chave Pix (e-mail)</div>
     <div class="pixRow">
-      <div class="pixKey" id="pixKeyFooter">lula13foto@gmail.com</div>
+      <div class="pixKey" id="pixKeyFooter">lula13online@gmail.com</div>
       <button class="copyPixBtn supportBtn" id="copyPixFooter" type="button">📋 COPIAR CHAVE PIX</button>
     </div>
   </div>
@@ -2803,7 +2803,7 @@ document.getElementById('resultAgain').onclick=()=>{
   window.scrollTo({top:0,behavior:'smooth'});
 };
 
-const pixKey='lula13foto@gmail.com';
+const pixKey='lula13online@gmail.com';
 const copyPixBtn=document.getElementById('copyPix');
 
 async function copyPixKey(){
@@ -3079,7 +3079,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const reset=document.getElementById('reset');
   if(reset && !document.getElementById('v989EditorDonation')){
     const cta=document.createElement('div'); cta.id='v989EditorDonation'; cta.className='supportCard';
-    cta.innerHTML='<h3>PRECISO DA SUA AJUDA</h3><p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13foto@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
+    cta.innerHTML='<h3>PRECISO DA SUA AJUDA</h3><p>Colabore comigo para manter este site no ar até o fim da eleição. Me chamo João, sou estudante e desenvolvi este projeto de forma independente. Toda ajuda é importante para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13online@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
     reset.insertAdjacentElement('afterend', cta);
   }
   // Add a CTA above the result heading without disturbing the existing result CTA.
@@ -3087,12 +3087,12 @@ document.addEventListener('DOMContentLoaded', function(){
   const resultTitle=result && result.querySelector('.resultTitle');
   if(result && resultTitle && !document.getElementById('v989ResultDonation')){
     const cta=document.createElement('div'); cta.id='v989ResultDonation'; cta.className='supportCard';
-    cta.innerHTML='<h3>GOSTOU? EU PRECISO DA SUA AJUDA</h3><p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13foto@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
+    cta.innerHTML='<h3>GOSTOU? EU PRECISO DA SUA AJUDA</h3><p>Preciso da sua ajuda para manter este site no ar até o fim da eleição! Sou o João, estudante e desenvolvedor independente. Toda contribuição é fundamental para cobrir os custos de hospedagem e manutenção.</p><div class="pixBox"><div class="pixLabel">Chave Pix (e-mail)</div><div class="pixRow"><div class="pixKey">lula13online@gmail.com</div><button type="button" class="copyPixBtn" data-copy-pix>📋 COPIAR CHAVE PIX</button></div></div>';
     resultTitle.insertAdjacentElement('beforebegin', cta);
   }
   document.addEventListener('click',function(ev){
     const btn=ev.target.closest('[data-copy-pix]'); if(!btn) return;
-    const key='lula13foto@gmail.com';
+    const key='lula13online@gmail.com';
     if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(key).then(()=>{btn.textContent='✓ CHAVE PIX COPIADA';}).catch(()=>{window.prompt('Copie a chave Pix:',key);});}
     else window.prompt('Copie a chave Pix:',key);
   });
