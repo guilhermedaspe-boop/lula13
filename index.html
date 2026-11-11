@@ -2409,17 +2409,28 @@ function normalizeOccupationText(value){
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 }
 function filterOccupations(){
+  if(!occupationSearch) return;
   const q=normalizeOccupationText(occupationSearch.value.trim());
+  const menu=document.getElementById('professionMenu');
+  const viewport=menu && menu.querySelector('.mobileScrollViewport');
+  const options=menu ? menu.querySelectorAll('.professionOption') : document.querySelectorAll('.professionOption');
   let visible=0;
-  document.querySelectorAll('.professionOption').forEach(btn=>{
-    const show=!q || normalizeOccupationText(btn.textContent).includes(q);
-    btn.style.display=show?'block':'none';
-    if(show)visible++;
+  options.forEach(btn=>{
+    const source=btn.dataset.profession || btn.textContent || '';
+    const show=!q || normalizeOccupationText(source).includes(q);
+    btn.hidden=!show;
+    btn.style.removeProperty('display');
+    if(show) visible++;
   });
-  occupationEmpty.hidden=visible!==0;
+  if(occupationEmpty) occupationEmpty.hidden=visible!==0;
+  if(viewport) viewport.scrollTop=0;
 }
-occupationSearch.addEventListener('input',filterOccupations);
-occupationSearch.addEventListener('click',e=>e.stopPropagation());
+if(occupationSearch){
+  occupationSearch.addEventListener('input',filterOccupations);
+  occupationSearch.addEventListener('search',filterOccupations);
+  occupationSearch.addEventListener('compositionend',filterOccupations);
+  occupationSearch.addEventListener('click',e=>e.stopPropagation());
+}
 
 const professionButton=document.getElementById('professionButton');
 const professionButtonText=document.getElementById('professionButtonText');
@@ -2503,14 +2514,20 @@ function normalizeClubMainText(value){
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 }
 function filterMainClubs(){
+  if(!clubMainSearch) return;
   const q=normalizeClubMainText(clubMainSearch.value.trim());
+  const viewport=clubMainMenu && clubMainMenu.querySelector('.mobileScrollViewport');
+  const options=clubMainMenu ? clubMainMenu.querySelectorAll('.clubMainOption') : document.querySelectorAll('.clubMainOption');
   let visible=0;
-  document.querySelectorAll('.clubMainOption').forEach(btn=>{
-    const show=!q || normalizeClubMainText(btn.textContent).includes(q);
-    btn.style.display=show?'block':'none';
-    if(show)visible++;
+  options.forEach(btn=>{
+    const source=btn.textContent || btn.dataset.text || '';
+    const show=!q || normalizeClubMainText(source).includes(q);
+    btn.hidden=!show;
+    btn.style.removeProperty('display');
+    if(show) visible++;
   });
-  clubMainEmpty.hidden=visible!==0;
+  if(clubMainEmpty) clubMainEmpty.hidden=visible!==0;
+  if(viewport) viewport.scrollTop=0;
 }
 clubMainButton.addEventListener('click',()=>{
   const willOpen=clubMainMenu.hidden;
@@ -2525,8 +2542,12 @@ clubMainButton.addEventListener('click',()=>{
     setTimeout(()=>{ clubMainSearch.focus(); },30);
   }
 });
-clubMainSearch.addEventListener('input',filterMainClubs);
-clubMainSearch.addEventListener('click',e=>e.stopPropagation());
+if(clubMainSearch){
+  clubMainSearch.addEventListener('input',filterMainClubs);
+  clubMainSearch.addEventListener('search',filterMainClubs);
+  clubMainSearch.addEventListener('compositionend',filterMainClubs);
+  clubMainSearch.addEventListener('click',e=>e.stopPropagation());
+}
 document.querySelectorAll('.clubMainOption').forEach(btn=>{
   btn.addEventListener('click',()=>{
     clubMain.value=btn.dataset.club;
@@ -3345,7 +3366,7 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
 </style>
 <script id="v9-104-independent-dropdown-scroll-script">
 (function () {
-  function createScrollableChoices(menuId, optionSelector, ariaLabel) {
+  function createScrollableChoices(menuId, ariaLabel) {
     const menu = document.getElementById(menuId);
     if (!menu) return;
 
@@ -3366,52 +3387,19 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
       menu.appendChild(viewport);
     }
 
-    // Android WebView fallback: manually scroll the choices on touch gestures.
-    // This avoids depending on nested native scrolling behavior in WhatsApp's browser.
-    if (viewport.dataset.touchScrollReady === '1') return;
-    viewport.dataset.touchScrollReady = '1';
-
-    let touchStartY = 0;
-    let startScrollTop = 0;
-    let moved = false;
-
-    viewport.addEventListener('touchstart', function (event) {
-      if (!event.touches || event.touches.length !== 1) return;
-      touchStartY = event.touches[0].clientY;
-      startScrollTop = viewport.scrollTop;
-      moved = false;
-    }, { passive: true });
-
-    viewport.addEventListener('touchmove', function (event) {
-      if (!event.touches || event.touches.length !== 1) return;
-      const currentY = event.touches[0].clientY;
-      const deltaY = currentY - touchStartY;
-      const maxScroll = viewport.scrollHeight - viewport.clientHeight;
-      if (Math.abs(deltaY) < 2 || maxScroll <= 0) return;
-
-      moved = true;
-      if (event.cancelable) event.preventDefault();
-      viewport.scrollTop = Math.max(0, Math.min(maxScroll, startScrollTop - deltaY));
-    }, { passive: false });
-
-    viewport.addEventListener('touchend', function () {
-      if (moved) {
-        // Prevent a drag gesture from activating the option underneath the finger.
-        window.setTimeout(function () { moved = false; }, 80);
-      }
-    }, { passive: true });
-
-    viewport.addEventListener('wheel', function (event) {
-      const maxScroll = viewport.scrollHeight - viewport.clientHeight;
-      if (maxScroll <= 0) return;
-      viewport.scrollTop += event.deltaY;
-      event.preventDefault();
-    }, { passive: false });
+    // Let Android/WhatsApp WebView handle native touch scrolling and momentum.
+    // The previous manual touchmove + preventDefault implementation removed inertia.
+    viewport.style.overflowY = 'auto';
+    viewport.style.overflowX = 'hidden';
+    viewport.style.webkitOverflowScrolling = 'touch';
+    viewport.style.touchAction = 'pan-y';
+    viewport.style.overscrollBehaviorY = 'contain';
+    viewport.dataset.nativeScrollReady = '1';
   }
 
   function initialize() {
-    createScrollableChoices('professionMenu', '.professionOption', 'Lista de profissões');
-    createScrollableChoices('clubMainMenu', '.clubMainOption', 'Lista de clubes');
+    createScrollableChoices('professionMenu', 'Lista de profissões');
+    createScrollableChoices('clubMainMenu', 'Lista de clubes');
   }
 
   if (document.readyState === 'loading') {
@@ -3421,5 +3409,135 @@ body.showing-result #resultBox .resultBottomActions{display:none!important}
   }
 })();
 </script>
+
+
+<style id="v105-menu-visual-project-colors">
+/* V9.105 — visual das listas alinhado à identidade neutra do projeto.
+   Mantém a estrutura e a rolagem independente implementada anteriormente. */
+#avatarSelectorsGroup,
+#clubMainPicker {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 14px !important;
+}
+
+#avatarSelectorsGroup .professionButton,
+#clubMainPicker .professionButton {
+  background: #ffffff !important;
+  color: #171717 !important;
+  border: 1px solid #d1d5db !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+#professionMenu,
+#clubMainMenu {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 12px !important;
+  padding: 6px !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .12) !important;
+}
+
+#professionMenu .occupationSearchWrap,
+#clubMainMenu .occupationSearchWrap {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 8px !important;
+}
+
+#professionMenu .occupationSearch,
+#clubMainMenu .occupationSearch {
+  background: #ffffff !important;
+  color: #171717 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 9px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+#professionMenu .mobileScrollViewport .professionOption,
+#clubMainMenu .mobileScrollViewport .clubMainOption {
+  display: block !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 12px 13px !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+  color: #171717 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #eeeeee !important;
+  border-radius: 8px !important;
+  text-align: left !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  letter-spacing: .01em !important;
+  white-space: normal !important;
+  transition: background-color .14s ease, color .14s ease !important;
+}
+
+#professionMenu .mobileScrollViewport .professionOption:nth-of-type(even),
+#clubMainMenu .mobileScrollViewport .clubMainOption:nth-of-type(even) {
+  background: #f6f7f9 !important;
+}
+
+#professionMenu .mobileScrollViewport .professionOption:hover,
+#professionMenu .mobileScrollViewport .professionOption:focus-visible,
+#professionMenu .mobileScrollViewport .professionOption.selected,
+#clubMainMenu .mobileScrollViewport .clubMainOption:hover,
+#clubMainMenu .mobileScrollViewport .clubMainOption:focus-visible,
+#clubMainMenu .mobileScrollViewport .clubMainOption.selected {
+  background: #fde8e8 !important;
+  color: #b9151b !important;
+  outline: none !important;
+}
+
+#professionMenu .occupationEmpty,
+#clubMainMenu .occupationEmpty {
+  background: #ffffff !important;
+  color: #6b7280 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 760px) {
+  #professionMenu .mobileScrollViewport .professionOption,
+  #clubMainMenu .mobileScrollViewport .clubMainOption {
+    min-height: 48px !important;
+    padding: 12px 12px !important;
+    font-size: 16px !important;
+  }
+}
+</style>
+
+
+<style id="v9-106-live-search-and-native-momentum-fix">
+/* Search results must override the visual theme's display:block !important. */
+#professionMenu .mobileScrollViewport .professionOption[hidden],
+#clubMainMenu .mobileScrollViewport .clubMainOption[hidden],
+#professionMenu .occupationEmpty[hidden],
+#clubMainMenu .occupationEmpty[hidden] {
+  display: none !important;
+}
+#professionMenu .mobileScrollViewport .professionOption:not([hidden]),
+#clubMainMenu .mobileScrollViewport .clubMainOption:not([hidden]) {
+  display: block !important;
+}
+/* Native touch scrolling preserves the browser's momentum/fling behavior. */
+#professionMenu .mobileScrollViewport,
+#clubMainMenu .mobileScrollViewport {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: contain !important;
+  touch-action: pan-y !important;
+  scroll-behavior: auto !important;
+  scrollbar-width: thin !important;
+  max-height: min(42vh, 360px) !important;
+}
+</style>
 
 </body></html>
